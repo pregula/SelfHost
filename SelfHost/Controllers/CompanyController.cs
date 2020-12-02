@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace SelfHost.Controllers
 {
     [Route("company")]
+    [ApiController]
     public class CompanyController : ControllerBase
     {
         private readonly ICompanyService _companyService;
@@ -18,8 +19,7 @@ namespace SelfHost.Controllers
         }
 
         [AuthFilter]
-        [HttpPost]
-        [Route("create")]
+        [HttpPost("create")]
         public async Task<IActionResult> Post([FromBody] CreateCompany command)
         {
             if (!ModelState.IsValid)
@@ -31,16 +31,14 @@ namespace SelfHost.Controllers
             return Created($"{companyId}", null);
         }
 
-        [HttpPost]
-        [Route("search")]
+        [HttpPost("search")]
         public async Task<IActionResult> Search([FromBody] Search command)
         {
             return Ok(await _companyService.SearchAsync(command));
         }
 
         [AuthFilter]
-        [HttpPut]
-        [Route("update/{id}")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(long id, [FromBody] UpdateCompany command)
         {
             if (!ModelState.IsValid)
@@ -52,8 +50,7 @@ namespace SelfHost.Controllers
         }
 
         [AuthFilter]
-        [HttpDelete]
-        [Route("delete/{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
             await _companyService.DeleteAsync(id);
